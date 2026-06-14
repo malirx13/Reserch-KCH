@@ -12,6 +12,7 @@
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Sarabun:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400&display=swap');
         
@@ -142,7 +143,9 @@
                         <button onclick="selectFormType('pre')" class="flex-1 py-3 text-sm sm:text-base font-bold rounded-xl transition-all duration-300 bg-white text-pink-600 shadow-sm border border-gray-200/50" id="select-pre-btn">
                             <i class="fa-solid fa-hourglass-start mr-2"></i>Pre-Test (ก่อนทดลอง)
                         </button>
-                        <button onclick="selectFormType('post')" class="flex-1 py-3 text-sm sm:text-base font-bold rounded-xl transition-all duration-300 text-gray-500 hover:text-gray-800" id="select-post-btn">
+                        
+                        <!-- ซ่อนปุ่ม Post-Test ชั่วคราว โดยเพิ่ม class 'hidden' -->
+                        <button onclick="selectFormType('post')" class="hidden flex-1 py-3 text-sm sm:text-base font-bold rounded-xl transition-all duration-300 text-gray-500 hover:text-gray-800" id="select-post-btn">
                             <i class="fa-solid fa-flag-checkered mr-2"></i>Post-Test (หลังทดลอง)
                         </button>
                     </div>
@@ -470,23 +473,15 @@
         const GAS_URL = "https://script.google.com/macros/s/AKfycbzMwCQIT9DAMZ-TubsLmx3z0xm_Z4cpWmgWU0qDyItIhqRSpfUCpHv714IxFlwxaIDK/exec";
 
         // ข้อมูลโครงสร้างแบบสอบถามทั้งหมด 
-        const demographics = {
-            title: 'ส่วนที่ 1 ข้อมูลทั่วไป (ข้อมูลส่วนบุคคล)',
-            type: 'radio',
-            questions: [
-                { id: 'Q1', text: '1. วิชาชีพ/ตำแหน่งปัจจุบันของท่านคืออะไร', options: ['เภสัชกร', 'พยาบาลวิชาชีพ', 'แพทย์', 'เจ้าพนักงานเภสัชกรรม', 'อื่น ๆ'] },
-                { id: 'Q2', text: '2. ท่านปฏิบัติงานอยู่ที่แผนก/หน่วยงานใด', options: ['ห้องยา/เภสัชกรรม', 'หอผู้ป่วยใน', 'ห้องฉุกเฉิน', 'ผู้ป่วยนอก', 'อื่น ๆ'] },
-                { id: 'Q3', text: '3. ท่านมีประสบการณ์ทำงานในโรงพยาบาลนานเท่าใด', options: ['น้อยกว่า 3 ปี', '3–5 ปี', '6–10 ปี', 'มากกว่า 10 ปี'] },
-                { id: 'Q4', text: '4. ระดับการศึกษา', options: ['ต่ำกว่าปริญญาตรี', 'ปริญญาตรี', 'สูงกว่าปริญญาตรี'] }
-            ]
-        };
-
         const preTestConfig = [
-            demographics,
             {
-                title: '(ต่อ) ส่วนที่ 1 ข้อมูลทั่วไป', 
-                type: 'radio', 
+                title: 'ส่วนที่ 1 ข้อมูลทั่วไป (ข้อมูลส่วนบุคคล)',
+                type: 'radio',
                 questions: [
+                    { id: 'Q1', text: '1. วิชาชีพ/ตำแหน่งปัจจุบันของท่านคืออะไร', options: ['เภสัชกร', 'พยาบาลวิชาชีพ', 'แพทย์', 'เจ้าพนักงานเภสัชกรรม', 'อื่น ๆ'] },
+                    { id: 'Q2', text: '2. ท่านปฏิบัติงานอยู่ที่แผนก/หน่วยงานใด', options: ['ห้องยา/เภสัชกรรม', 'หอผู้ป่วยใน', 'ห้องฉุกเฉิน', 'ผู้ป่วยนอก', 'NCD', 'งานยาเสพติด', 'PCC', 'อื่น ๆ'] },
+                    { id: 'Q3', text: '3. ท่านมีประสบการณ์ทำงานในโรงพยาบาลนานเท่าใด', options: ['น้อยกว่า 3 ปี', '3–5 ปี', '6–10 ปี', 'มากกว่า 10 ปี'] },
+                    { id: 'Q4', text: '4. ระดับการศึกษา', options: ['ต่ำกว่าปริญญาตรี', 'ปริญญาตรี', 'สูงกว่าปริญญาตรี'] },
                     { id: 'Q5', text: '5. ตั้งแต่ท่านทำงานที่ รพ.กุดจับ ท่านเคยรายงานความคลาดเคลื่อนทางยากี่ครั้ง', options: ['ไม่เคยรายงาน', 'เคยรายงาน 1–5 ครั้ง', 'เคยรายงาน 6–10 ครั้ง', 'เคยรายงานมากกว่า 10 ครั้ง'] },
                     { id: 'Q6', text: '6. ท่านมีความคุ้นเคยกับการใช้เทคโนโลยีดิจิทัลในการทำงานในระดับใด', options: ['น้อยมาก (1)', 'น้อย (2)', 'ปานกลาง (3)', 'มาก (4)', 'มากที่สุด (5)'] }
                 ]
@@ -539,7 +534,7 @@
                 type: 'radio',
                 questions: [
                     { id: 'Q1', text: '1. วิชาชีพ/ตำแหน่งปัจจุบันของท่านคืออะไร', options: ['เภสัชกร', 'พยาบาลวิชาชีพ', 'แพทย์', 'เจ้าพนักงานเภสัชกรรม', 'อื่น ๆ'] },
-                    { id: 'Q2', text: '2. ท่านปฏิบัติงานอยู่ที่แผนก/หน่วยงานใด', options: ['ห้องยา/เภสัชกรรม', 'หอผู้ป่วยใน', 'ห้องฉุกเฉิน', 'ผู้ป่วยนอก', 'อื่น ๆ'] },
+                    { id: 'Q2', text: '2. ท่านปฏิบัติงานอยู่ที่แผนก/หน่วยงานใด', options: ['ห้องยา/เภสัชกรรม', 'หอผู้ป่วยใน', 'ห้องฉุกเฉิน', 'ผู้ป่วยนอก', 'NCD', 'งานยาเสพติด', 'PCC', 'อื่น ๆ'] },
                     { id: 'Q3', text: '3. ท่านมีประสบการณ์ทำงานในโรงพยาบาลนานเท่าใด', options: ['น้อยกว่า 3 ปี', '3–5 ปี', '6–10 ปี', 'มากกว่า 10 ปี'] },
                     { id: 'Q4', text: '4. ระดับการศึกษา', options: ['ต่ำกว่าปริญญาตรี', 'ปริญญาตรี', 'สูงกว่าปริญญาตรี'] },
                     { id: 'Q5', text: '5. ในช่วง 4 สัปดาห์ที่ผ่านมา ท่านเคยบันทึกข้อมูลรายงานความคลาดเคลื่อนผ่านระบบใหม่กี่ครั้ง', options: ['ไม่เคยรายงาน', 'เคยรายงาน 1–5 ครั้ง', 'เคยรายงาน 6–10 ครั้ง', 'เคยรายงานมากกว่า 10 ครั้ง'] },
@@ -941,7 +936,7 @@
             let finalData = { ...formData };
             
             const mapQ1 = { "1": "1_เภสัชกร", "2": "2_พยาบาลวิชาชีพ", "3": "3_แพทย์", "4": "4_เจ้าพนักงานเภสัชกรรม", "5": "5_อื่น ๆ" };
-            const mapQ2 = { "1": "1_ห้องยา/เภสัชกรรม", "2": "2_หอผู้ป่วยใน", "3": "3_ห้องฉุกเฉิน", "4": "4_ผู้ป่วยนอก", "5": "5_อื่น ๆ" };
+            const mapQ2 = { "1": "1_ห้องยา/เภสัชกรรม", "2": "2_หอผู้ป่วยใน", "3": "3_ห้องฉุกเฉิน", "4": "4_ผู้ป่วยนอก", "5": "5_NCD", "6": "6_งานยาเสพติด", "7": "7_PCC", "8": "8_อื่น ๆ" };
             const mapQ3 = { "1": "1_น้อยกว่า 3 ปี", "2": "2_3–5 ปี", "3": "3_6–10 ปี", "4": "4_มากกว่า 10 ปี" };
             const mapQ4 = { "1": "1_ต่ำกว่าปริญญาตรี", "2": "2_ปริญญาตรี", "3": "3_สูงกว่าปริญญาตรี" };
             const mapQ5Pre = { "1": "1_ไม่เคยรายงาน", "2": "2_เคยรายงาน 1–5 ครั้ง", "3": "3_เคยรายงาน 6–10 ครั้ง", "4": "4_เคยรายงานมากกว่า 10 ครั้ง" };
@@ -1177,6 +1172,7 @@
 
         function loginAdmin() {
             const pass = document.getElementById('admin-pass').value;
+            // รหัสผ่านเข้าสู่ระบบถูกตั้งไว้ตรงนี้
             if (pass === '0821188663') {
                 const authCard = document.getElementById('admin-auth-card');
                 authCard.style.opacity = 0;
