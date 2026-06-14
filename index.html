@@ -68,7 +68,7 @@
             box-shadow: 0 6px 12px -2px rgba(244, 114, 182, 0.15);
         }
 
-        /* Custom Radio Button Container (ใช้ CSS has selector เพื่อจับ state) */
+        /* Custom Radio Button Container */
         .radio-container {
             transition: all 0.2s ease;
         }
@@ -137,13 +137,12 @@
                     <h2 class="text-2xl sm:text-4xl font-extrabold text-gray-800 mb-3 tracking-tight">แบบสอบถามประเมินระบบ</h2>
                     <p class="text-gray-500 text-sm sm:text-base max-w-xl mx-auto">โปรดเลือกประเภทแบบทดสอบด้านล่าง เพื่อดำเนินการประเมินผล ข้อมูลของท่านจะเป็นประโยชน์อย่างยิ่งต่องานวิจัย</p>
 
-                    <!-- Toggle Pre/Post Test (Segmented Control Design) -->
+                    <!-- Toggle Pre/Post Test -->
                     <div class="flex justify-center mt-8 p-1.5 bg-gray-100 rounded-2xl max-w-md mx-auto shadow-inner border border-gray-200/60">
                         <button onclick="selectFormType('pre')" class="flex-1 py-3 text-sm sm:text-base font-bold rounded-xl transition-all duration-300 bg-white text-pink-600 shadow-sm border border-gray-200/50" id="select-pre-btn">
                             <i class="fa-solid fa-hourglass-start mr-2"></i>Pre-Test (ก่อนทดลอง)
                         </button>
-                        <!-- เพิ่มคลาส hidden เพื่อซ่อนปุ่ม Post-test ชั่วคราว -->
-                        <button onclick="selectFormType('post')" class="hidden flex-1 py-3 text-sm sm:text-base font-bold rounded-xl transition-all duration-300 text-gray-500 hover:text-gray-800" id="select-post-btn">
+                        <button onclick="selectFormType('post')" class="flex-1 py-3 text-sm sm:text-base font-bold rounded-xl transition-all duration-300 text-gray-500 hover:text-gray-800" id="select-post-btn">
                             <i class="fa-solid fa-flag-checkered mr-2"></i>Post-Test (หลังทดลอง)
                         </button>
                     </div>
@@ -161,12 +160,10 @@
                 <!-- Form -->
                 <form id="researchForm" onsubmit="handleFormSubmit(event)" class="space-y-10">
                     
-                    <!-- Area สำหรับสร้างคำถาม (JS Injection) -->
                     <div id="survey-questions-container" class="space-y-10">
                         <!-- Questions injected here -->
                     </div>
 
-                    <!-- ข้อเสนอแนะ -->
                     <div class="bg-gradient-to-br from-gray-50 to-white p-8 rounded-[2rem] border border-gray-200 shadow-sm">
                         <label for="suggestion" class="flex items-center text-gray-800 font-extrabold mb-4 text-lg">
                             <i class="fa-regular fa-comment-dots text-pink-500 mr-3 text-xl"></i> ข้อเสนอแนะและข้อคิดเห็นเพิ่มเติม (ถ้ามี)
@@ -174,7 +171,6 @@
                         <textarea id="suggestion" rows="4" class="w-full p-5 rounded-2xl border-2 border-gray-100 focus:border-pink-400 focus:ring-4 focus:ring-pink-100 focus:outline-none transition-all resize-none text-gray-700 leading-relaxed bg-white/50" placeholder="ความคิดเห็น หรือสิ่งที่อยากให้ปรับปรุงเพิ่มเติม..."></textarea>
                     </div>
 
-                    <!-- Submit Button -->
                     <div class="pt-6 pb-4">
                         <button type="submit" class="group relative w-full flex items-center justify-center overflow-hidden rounded-2xl bg-gradient-to-r from-pink-500 via-rose-500 to-pink-600 p-1 text-white shadow-xl shadow-pink-200/50 hover:shadow-pink-300/50 transition-all duration-300 hover:-translate-y-1">
                             <span class="absolute inset-0 bg-white/20 opacity-0 group-hover:opacity-100 transition-opacity"></span>
@@ -192,9 +188,16 @@
         <!-- ==================== ส่วนที่ 2: แดชบอร์ดวิเคราะห์ผล (Dashboard) ==================== -->
         <section id="dashboard-tab" class="tab-content hidden fade-in">
             
+            <!-- Dashboard Toolbar -->
+            <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4">
+                <h2 class="text-2xl font-extrabold text-gray-800 tracking-tight">ภาพรวมข้อมูลวิจัย</h2>
+                <button onclick="fetchDataFromCloud()" class="bg-white border border-pink-200 text-pink-600 hover:bg-pink-50 font-bold py-2 px-5 rounded-xl shadow-sm transition-all duration-300 text-sm flex items-center transform hover:-translate-y-0.5">
+                    <i class="fa-solid fa-cloud-arrow-down mr-2"></i> ซิงค์ข้อมูลจาก Cloud
+                </button>
+            </div>
+
             <!-- Summary Cards -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-10">
-                <!-- Card 1 -->
                 <div class="relative overflow-hidden bg-gradient-to-br from-pink-500 to-rose-600 p-8 rounded-[2rem] text-white shadow-xl shadow-pink-200/50 transform hover:-translate-y-1 transition-transform">
                     <i class="fa-solid fa-clipboard-user absolute -right-6 -bottom-6 text-[8rem] text-white/10 transform rotate-12"></i>
                     <div class="relative z-10">
@@ -213,7 +216,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2 -->
                 <div class="relative overflow-hidden bg-gradient-to-br from-emerald-400 to-teal-500 p-8 rounded-[2rem] text-white shadow-xl shadow-emerald-200/50 transform hover:-translate-y-1 transition-transform">
                     <i class="fa-solid fa-user-check absolute -right-6 -bottom-6 text-[8rem] text-white/10 transform rotate-12"></i>
                     <div class="relative z-10">
@@ -232,20 +234,19 @@
                     </div>
                 </div>
 
-                <!-- Card 3 -->
                 <div class="relative overflow-hidden bg-gradient-to-br from-indigo-500 to-blue-600 p-8 rounded-[2rem] text-white shadow-xl shadow-blue-200/50 transform hover:-translate-y-1 transition-transform">
                     <i class="fa-solid fa-chart-pie absolute -right-6 -bottom-6 text-[8rem] text-white/10 transform rotate-12"></i>
                     <div class="relative z-10">
                         <div class="flex justify-between items-start">
                             <div>
-                                <span class="text-indigo-100 text-sm font-bold tracking-wide uppercase">อัตราการสำเร็จ</span>
+                                <span class="text-indigo-100 text-sm font-bold tracking-wide uppercase">รวมทั้งหมด</span>
                                 <div class="flex items-baseline space-x-2 mt-2">
-                                    <span class="text-5xl font-black">100</span>
-                                    <span class="text-indigo-100 font-medium">%</span>
+                                    <span class="text-5xl font-black" id="stat-total-count">0</span>
+                                    <span class="text-indigo-100 font-medium">คน</span>
                                 </div>
                             </div>
                             <div class="bg-white/20 backdrop-blur-md p-3.5 rounded-2xl shadow-inner">
-                                <i class="fa-solid fa-shield-halved text-2xl"></i>
+                                <i class="fa-solid fa-layer-group text-2xl"></i>
                             </div>
                         </div>
                     </div>
@@ -261,7 +262,7 @@
                             <div class="bg-pink-100 p-3 rounded-xl mr-4"><i class="fa-solid fa-chart-bar text-pink-600 text-xl"></i></div>
                             <h2 class="text-xl font-extrabold text-gray-800 tracking-tight">ผลการประเมิน (Pre-test)</h2>
                         </div>
-                        <span class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wide">คะแนนเฉลี่ยรายด้าน</span>
+                        <span class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wide">คะแนนเฉลี่ย</span>
                     </div>
                     <div class="space-y-6" id="pre-domain-stats">
                         <!-- Stats injected via JS -->
@@ -275,7 +276,7 @@
                             <div class="bg-emerald-100 p-3 rounded-xl mr-4"><i class="fa-solid fa-chart-line text-emerald-600 text-xl"></i></div>
                             <h2 class="text-xl font-extrabold text-gray-800 tracking-tight">ผลการประเมิน (Post-test)</h2>
                         </div>
-                        <span class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wide">คะแนนเฉลี่ยรายด้าน</span>
+                        <span class="px-4 py-1.5 bg-gray-100 text-gray-600 rounded-full text-xs font-bold tracking-wide">คะแนนเฉลี่ย</span>
                     </div>
                     <div class="space-y-6" id="post-domain-stats">
                         <!-- Stats injected via JS -->
@@ -303,7 +304,6 @@
             
             <!-- Auth Card -->
             <div id="admin-auth-card" class="max-w-md mx-auto bg-white/95 backdrop-blur-md p-10 rounded-[2.5rem] shadow-2xl shadow-pink-200/40 border border-white text-center mt-10 relative overflow-hidden">
-                <!-- Decorative Top Blob -->
                 <div class="absolute -top-16 -right-16 w-32 h-32 bg-pink-400 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
                 <div class="absolute -bottom-16 -left-16 w-32 h-32 bg-rose-400 rounded-full mix-blend-multiply filter blur-2xl opacity-50"></div>
                 
@@ -342,7 +342,6 @@
                     </div>
                     
                     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
-                        <!-- Pre-test Setup -->
                         <div class="bg-gray-50/50 p-6 rounded-3xl border border-gray-200/60">
                             <h3 class="font-bold text-gray-800 mb-5 flex items-center"><span class="w-2 h-2 rounded-full bg-pink-500 mr-2"></span> ระบบเดิม (Baseline / Pre-test)</h3>
                             <div class="space-y-4">
@@ -365,7 +364,6 @@
                             </div>
                         </div>
 
-                        <!-- Post-test Setup -->
                         <div class="bg-gray-50/50 p-6 rounded-3xl border border-gray-200/60">
                             <h3 class="font-bold text-gray-800 mb-5 flex items-center"><span class="w-2 h-2 rounded-full bg-emerald-500 mr-2"></span> ระบบใหม่ (Smart Dashboard)</h3>
                             <div class="space-y-4">
@@ -422,16 +420,16 @@
                         <div class="flex items-center">
                             <div class="bg-rose-100 p-3 rounded-xl mr-4"><i class="fa-solid fa-database text-rose-600 text-xl"></i></div>
                             <div>
-                                <h2 class="text-xl font-extrabold text-gray-800">ฐานข้อมูลจำลอง (Local Storage)</h2>
-                                <p class="text-sm text-gray-500">ข้อมูลดิบที่ถูกบันทึกไว้ในเบราว์เซอร์นี้</p>
+                                <h2 class="text-xl font-extrabold text-gray-800">ฐานข้อมูล (Data)</h2>
+                                <p class="text-sm text-gray-500">ข้อมูลที่ดึงมาจาก Google Sheets / Local</p>
                             </div>
                         </div>
                         <div class="flex space-x-2 w-full sm:w-auto">
-                            <button onclick="exportDataToCsv()" class="flex-1 sm:flex-none flex justify-center items-center bg-emerald-50 text-emerald-600 border border-emerald-200 font-bold py-2.5 px-4 rounded-xl hover:bg-emerald-500 hover:text-white transition-all text-sm">
-                                <i class="fa-solid fa-file-csv mr-2"></i> ส่งออก CSV
+                            <button onclick="fetchDataFromCloud()" class="flex-1 sm:flex-none flex justify-center items-center bg-blue-50 text-blue-600 border border-blue-200 font-bold py-2.5 px-4 rounded-xl hover:bg-blue-500 hover:text-white transition-all text-sm">
+                                <i class="fa-solid fa-cloud-arrow-down mr-2"></i> ซิงค์ข้อมูล
                             </button>
                             <button onclick="clearSystemData()" class="flex-1 sm:flex-none flex justify-center items-center bg-rose-50 text-rose-600 border border-rose-200 font-bold py-2.5 px-4 rounded-xl hover:bg-rose-500 hover:text-white transition-all text-sm">
-                                <i class="fa-solid fa-trash-can mr-2"></i> ล้างข้อมูล
+                                <i class="fa-solid fa-trash-can mr-2"></i> ล้างข้อมูลในเครื่อง
                             </button>
                         </div>
                     </div>
@@ -466,8 +464,11 @@
         <p class="text-xs mt-1 opacity-70">Designed for better Medical Error Management.</p>
     </footer>
 
-    <!-- Script ควบคุมการทำงาน (คงฟังก์ชันเดิมทั้งหมด) -->
+    <!-- Script ควบคุมการทำงาน -->
     <script>
+        // กำหนด URL ของ Google Apps Script ไว้ในโค้ดแบบตายตัว
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbzMwCQIT9DAMZ-TubsLmx3z0xm_Z4cpWmgWU0qDyItIhqRSpfUCpHv714IxFlwxaIDK/exec";
+
         // ข้อมูลโครงสร้างแบบสอบถามทั้งหมด 
         const demographics = {
             title: 'ส่วนที่ 1 ข้อมูลทั่วไป (ข้อมูลส่วนบุคคล)',
@@ -475,20 +476,24 @@
             questions: [
                 { id: 'Q1', text: '1. วิชาชีพ/ตำแหน่งปัจจุบันของท่านคืออะไร', options: ['เภสัชกร', 'พยาบาลวิชาชีพ', 'แพทย์', 'เจ้าพนักงานเภสัชกรรม', 'อื่น ๆ'] },
                 { id: 'Q2', text: '2. ท่านปฏิบัติงานอยู่ที่แผนก/หน่วยงานใด', options: ['ห้องยา/เภสัชกรรม', 'หอผู้ป่วยใน', 'ห้องฉุกเฉิน', 'ผู้ป่วยนอก', 'อื่น ๆ'] },
-                { id: 'Q3', text: '3. ท่านมีประสบการณ์ทำงานในโรงพยาบาลนานเท่าใด', options: ['น้อยกว่า 3 ปี', '3–5 ปี', '6–10 ปี', 'มากกว่า 10 ปี'] }
+                { id: 'Q3', text: '3. ท่านมีประสบการณ์ทำงานในโรงพยาบาลนานเท่าใด', options: ['น้อยกว่า 3 ปี', '3–5 ปี', '6–10 ปี', 'มากกว่า 10 ปี'] },
+                { id: 'Q4', text: '4. ระดับการศึกษา', options: ['ต่ำกว่าปริญญาตรี', 'ปริญญาตรี', 'สูงกว่าปริญญาตรี'] }
             ]
         };
 
         const preTestConfig = [
             demographics,
             {
-                title: '(ต่อ) ส่วนที่ 1 ข้อมูลทั่วไป', type: 'radio', questions: [
-                    { id: 'Q4', text: '4. ตั้งแต่ท่านทำงานที่ รพ.กุดจับ ท่านเคยรายงานความคลาดเคลื่อนทางยากี่ครั้ง', options: ['ไม่เคยรายงาน', 'เคยรายงาน 1–5 ครั้ง', 'เคยรายงาน 6–10 ครั้ง', 'เคยรายงานมากกว่า 10 ครั้ง'] },
-                    { id: 'Q5', text: '5. ท่านมีความคุ้นเคยกับการใช้เทคโนโลยีดิจิทัลในการทำงานในระดับใด', options: ['น้อยมาก (1)', 'น้อย (2)', 'ปานกลาง (3)', 'มาก (4)', 'มากที่สุด (5)'] }
+                title: '(ต่อ) ส่วนที่ 1 ข้อมูลทั่วไป', 
+                type: 'radio', 
+                questions: [
+                    { id: 'Q5', text: '5. ตั้งแต่ท่านทำงานที่ รพ.กุดจับ ท่านเคยรายงานความคลาดเคลื่อนทางยากี่ครั้ง', options: ['ไม่เคยรายงาน', 'เคยรายงาน 1–5 ครั้ง', 'เคยรายงาน 6–10 ครั้ง', 'เคยรายงานมากกว่า 10 ครั้ง'] },
+                    { id: 'Q6', text: '6. ท่านมีความคุ้นเคยกับการใช้เทคโนโลยีดิจิทัลในการทำงานในระดับใด', options: ['น้อยมาก (1)', 'น้อย (2)', 'ปานกลาง (3)', 'มาก (4)', 'มากที่สุด (5)'] }
                 ]
             },
             {
-                title: 'ส่วนที่ 2 สภาพปัญหาและความต้องการ (1=น้อยที่สุด, 5=มากที่สุด)', type: 'likert',
+                title: 'ส่วนที่ 2 สภาพปัญหาและความต้องการ (1=น้อยที่สุด, 5=มากที่สุด)', 
+                type: 'likert',
                 domains: [
                     {
                         name: 'กลุ่มที่ 1 สภาพปัญหาของระบบรายงานเดิม (Pre2.1)', prefix: 'Pre2_', startIdx: 1,
@@ -530,17 +535,20 @@
 
         const postTestConfig = [
             {
-                title: 'ส่วนที่ 1 ข้อมูลทั่วไป (ข้อมูลส่วนบุคคล)', type: 'radio',
+                title: 'ส่วนที่ 1 ข้อมูลทั่วไป (ข้อมูลส่วนบุคคล)', 
+                type: 'radio',
                 questions: [
                     { id: 'Q1', text: '1. วิชาชีพ/ตำแหน่งปัจจุบันของท่านคืออะไร', options: ['เภสัชกร', 'พยาบาลวิชาชีพ', 'แพทย์', 'เจ้าพนักงานเภสัชกรรม', 'อื่น ๆ'] },
                     { id: 'Q2', text: '2. ท่านปฏิบัติงานอยู่ที่แผนก/หน่วยงานใด', options: ['ห้องยา/เภสัชกรรม', 'หอผู้ป่วยใน', 'ห้องฉุกเฉิน', 'ผู้ป่วยนอก', 'อื่น ๆ'] },
                     { id: 'Q3', text: '3. ท่านมีประสบการณ์ทำงานในโรงพยาบาลนานเท่าใด', options: ['น้อยกว่า 3 ปี', '3–5 ปี', '6–10 ปี', 'มากกว่า 10 ปี'] },
-                    { id: 'Q4', text: '4. ในช่วง 4 สัปดาห์ที่ผ่านมา ท่านเคยบันทึกข้อมูลรายงานความคลาดเคลื่อนผ่านระบบใหม่กี่ครั้ง', options: ['ไม่เคยรายงาน', 'เคยรายงาน 1–5 ครั้ง', 'เคยรายงาน 6–10 ครั้ง', 'เคยรายงานมากกว่า 10 ครั้ง'] },
-                    { id: 'Q5', text: '5. ท่านมีความคุ้นเคยกับการใช้งานระบบ Smart Dashboard ในการทำงานในระดับใด', options: ['น้อยมาก (1)', 'น้อย (2)', 'ปานกลาง (3)', 'มาก (4)', 'มากที่สุด (5)'] }
+                    { id: 'Q4', text: '4. ระดับการศึกษา', options: ['ต่ำกว่าปริญญาตรี', 'ปริญญาตรี', 'สูงกว่าปริญญาตรี'] },
+                    { id: 'Q5', text: '5. ในช่วง 4 สัปดาห์ที่ผ่านมา ท่านเคยบันทึกข้อมูลรายงานความคลาดเคลื่อนผ่านระบบใหม่กี่ครั้ง', options: ['ไม่เคยรายงาน', 'เคยรายงาน 1–5 ครั้ง', 'เคยรายงาน 6–10 ครั้ง', 'เคยรายงานมากกว่า 10 ครั้ง'] },
+                    { id: 'Q6', text: '6. ท่านมีความคุ้นเคยกับการใช้งานระบบ Smart Dashboard ในการทำงานในระดับใด', options: ['น้อยมาก (1)', 'น้อย (2)', 'ปานกลาง (3)', 'มาก (4)', 'มากที่สุด (5)'] }
                 ]
             },
             {
-                title: 'ส่วนที่ 2 การประเมินประสิทธิภาพและประโยชน์การใช้งาน (1=เห็นด้วยน้อยที่สุด, 5=เห็นด้วยมากที่สุด)', type: 'likert',
+                title: 'ส่วนที่ 2 การประเมินประสิทธิภาพและประโยชน์การใช้งาน (1=เห็นด้วยน้อยที่สุด, 5=เห็นด้วยมากที่สุด)', 
+                type: 'likert',
                 domains: [
                     {
                         name: 'กลุ่มที่ 1 ด้านความรวดเร็วในการจัดสรรข้อมูล (Efficiency - P2.1)', prefix: 'P2_', startIdx: 1,
@@ -635,18 +643,135 @@
             }
         ];
 
+        // ตัวช่วยสำหรับแปลงหัวตารางภาษาไทยที่ส่งกลับมาจาก Google Sheets ให้เป็นตัวแปรที่เราใช้คำนวณกราฟ
+        const reverseMap = {
+            "วันและเวลา": "Timestamp",
+            "รหัสแบบสอบถาม": "id",
+            "ฟอร์ม": "FormType",
+            "การยินยอม": "Consent",
+            "ส่วนที่1_Q1.วิชาชีพ": "Q1", 
+            "ส่วนที่1_Q2.แผนก": "Q2",
+            "ส่วนที่1_Q3.ประสบการณ์": "Q3", 
+            "ส่วนที่1_Q4.ระดับการศึกษา": "Q4",
+            "ส่วนที่1_Q5.เคยรายงาน": "Q5",
+            "ส่วนที่1_Q6.คุ้นเคยดิจิทัล": "Q6",
+            "ส่วนที่1_Q5.เคยรายงาน(ระบบใหม่)": "Q5",
+            "ส่วนที่1_Q6.คุ้นเคย(ระบบใหม่)": "Q6",
+            "Pre2.1_1.ซับซ้อน": "Pre2_1", "Pre2.1_2.เสียเวลา": "Pre2_2", "Pre2.1_3.ระบบเดิมใช้งานยาก": "Pre2_3",
+            "Pre2.1_4.ไม่แจ้งเตือนทันที": "Pre2_4", "Pre2.1_5.ข้อมูลถึงผู้บริหารช้า": "Pre2_5", "Pre2.1_6.ไม่มีสถิติทันที": "Pre2_6",
+            "Pre2.2_7.กลัวถูกตำหนิ": "Pre2_7", "Pre2.2_8.มีขั้นตอนมากไป": "Pre2_8", "Pre2.2_9.ภาระงานเยอะ": "Pre2_9",
+            "Pre2.2_10.ไม่แน่ใจว่าต้องรายงาน": "Pre2_10", "Pre2.2_11.คิดว่าไม่เกิดการเปลี่ยนแปลง": "Pre2_11", "Pre2.2_12.บังคับระบุชื่อ": "Pre2_12",
+            "Pre2.3_13.อยากให้รายงานง่ายขึ้น": "Pre2_13", "Pre2.3_14.อยากให้รายงานแบบไม่ระบุชื่อได้": "Pre2_14", "Pre2.3_15.แจ้งเตือนผ่านLINE": "Pre2_15",
+            "Pre2.3_16.แสดงDashboardทันที": "Pre2_16", "Pre2.3_17.ใช้งานผ่านมือถือ": "Pre2_17", "Pre2.3_18.ดูผลลัพธ์แบบRealtime": "Pre2_18", "Pre2.3_19.สรุปรายงานอัตโนมัติ": "Pre2_19",
+            "Post2.1_1.บันทึกรวดเร็ว": "P2_1", "Post2.1_2.แสดงผลทันที": "P2_2", "Post2.1_3.แจ้งเตือนเร็ว": "P2_3", "Post2.1_4.ใช้เวลาน้อยลง": "P2_4", "Post2.1_5.ผู้บริหารได้ข้อมูลเร็วขึ้น": "P2_5",
+            "Post2.2_6.ข้อมูลครอบคลุม": "P2_6", "Post2.2_7.จำแนกประเภทครบ": "P2_7", "Post2.2_8.NearMissไม่สูญหาย": "P2_8", "Post2.2_9.ข้อมูลไม่หายระหว่างรับส่ง": "P2_9", "Post2.2_10.สรุปรายเดือนครบถ้วน": "P2_10",
+            "Post2.3_11.AIจำแนกถูกต้อง": "P2_11", "Post2.3_12.ประเมินความรุนแรงถูก": "P2_12", "Post2.3_13.การแจ้งเตือนเหมาะสม": "P2_13", "Post2.3_14.สรุปรายงานถูกต้อง": "P2_14", "Post2.3_15.เชื่อถือAI": "P2_15",
+            "Post3.1_1.ขั้นตอนง่าย": "P3_1", "Post3.1_2.พึ่งตัวเองได้": "P3_2", "Post3.1_3.กราฟเข้าใจง่าย": "P3_3", "Post3.1_4.เรียนรู้เร็ว": "P3_4", "Post3.1_5.จัดวางปุ่มสะดวก": "P3_5",
+            "Post3.2_6.ทำให้รายงานง่ายขึ้น": "P3_6", "Post3.2_7.ตระหนักถึงความเสี่ยงเร็ว": "P3_7", "Post3.2_8.มีประโยชน์ต่อการปรับปรุง": "P3_8", "Post3.2_9.ลดภาระงานจริง": "P3_9", "Post3.2_10.ยกระดับความปลอดภัย": "P3_10",
+            "Post3.3_11.สอดคล้องบริบททำงาน": "P3_11", "Post3.3_12.เกณฑ์เตือนสอดคล้องปัญหา": "P3_12", "Post3.3_13.ไม่เพิ่มภาระงาน": "P3_13", "Post3.3_14.ตอบสนองความต้องการครบ": "P3_14", "Post3.3_15.เหมาะเป็นเครื่องมือหลัก": "P3_15",
+            "Post3.4_16.ตั้งใจจะใช้ต่อ": "P3_16", "Post3.4_17.จะแนะนำให้เพื่อนใช้": "P3_17", "Post3.4_18.ควรใช้ต่อเนื่อง": "P3_18", "Post3.4_19.สนับสนุนให้ขยายผล": "P3_19", "Post3.4_20.ตั้งใจใช้สม่ำเสมอ": "P3_20",
+            "Post4_1.กล้าเขียนรายงานมากขึ้น": "P4b_1", "Post4_2.เพื่อนให้ความสำคัญ": "P4b_2", "Post4_3.สร้างบรรยากาศปลอดภัย": "P4b_3", "Post4_4.ผู้บริหารนำไปใช้จริง": "P4b_4",
+            "ข้อเสนอแนะ": "Suggestion"
+        };
+
         let currentType = 'pre'; 
         let responses = JSON.parse(localStorage.getItem('kutchap_data')) || [];
 
         window.onload = function() {
-            const storedUrl = localStorage.getItem('kutchap_gas_url');
-            if(storedUrl) document.getElementById('gas-url').value = storedUrl;
+            // แสดง URL ไว้ในช่อง Admin และปิดการแก้ไข (ล็อกไว้)
+            const urlInput = document.getElementById('gas-url');
+            if(urlInput) {
+                urlInput.value = GAS_URL;
+                urlInput.readOnly = true;
+                urlInput.classList.add('opacity-50', 'cursor-not-allowed');
+            }
 
             loadAdminStats();
             renderQuestions();
             updateDashboardData();
             updateAdminTable();
+
+            // ดึงข้อมูลจาก Cloud อัตโนมัติเมื่อเปิดหน้าเว็บมาทันที
+            fetchDataFromCloud(true); 
         };
+
+        // ====== ฟังก์ชันดึงข้อมูลจาก Cloud ======
+        function fetchDataFromCloud(isSilent = false) {
+            const gasUrl = GAS_URL;
+            if (!gasUrl) {
+                if (!isSilent) Swal.fire('ไม่พบ URL', 'กรุณาตั้งค่า Google Sheets URL ในเมนูผู้ดูแลระบบก่อน', 'info');
+                return;
+            }
+
+            if (!isSilent) {
+                Swal.fire({
+                    title: 'กำลังซิงค์ข้อมูล...',
+                    text: 'กำลังดึงข้อมูลล่าสุดจากระบบคลาวด์',
+                    allowOutsideClick: false,
+                    didOpen: () => Swal.showLoading(),
+                    customClass: { popup: 'rounded-[2rem]' }
+                });
+            }
+
+            fetch(gasUrl)
+                .then(response => response.json())
+                .then(json => {
+                    if (json.result === 'success') {
+                        let cloudResponses = [];
+                        
+                        // ฟังก์ชันแปลงข้อมูลจากภาษาไทยเป็นภาษาอังกฤษสำหรับกราฟ
+                        const processSheetData = (sheetData, formType) => {
+                            if (!sheetData) return;
+                            sheetData.forEach(row => {
+                                let newRow = { FormType: formType };
+                                Object.keys(row).forEach(thaiHeader => {
+                                    const engKey = reverseMap[thaiHeader];
+                                    if (engKey) {
+                                        newRow[engKey] = row[thaiHeader];
+                                    }
+                                });
+                                // เก็บเฉพาะอันที่มี id เพื่อป้องกันแถวว่าง
+                                if(newRow.id) cloudResponses.push(newRow);
+                            });
+                        };
+                        
+                        processSheetData(json.data.preTest, 'Pre-Test');
+                        processSheetData(json.data.postTest, 'Post-Test');
+                        
+                        // เอาข้อมูลใหม่จาก Cloud มาทับข้อมูลเดิมในเครื่องทั้งหมด
+                        responses = cloudResponses;
+                        localStorage.setItem('kutchap_data', JSON.stringify(responses));
+                        
+                        updateDashboardData();
+                        updateAdminTable();
+                        
+                        if (!isSilent) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'ซิงค์ข้อมูลสำเร็จ',
+                                text: `ดึงข้อมูลทั้งหมด ${responses.length} รายการ`,
+                                timer: 1500,
+                                showConfirmButton: false,
+                                customClass: { popup: 'rounded-[2rem]' }
+                            });
+                        }
+                    } else {
+                        throw new Error(json.message);
+                    }
+                })
+                .catch(err => {
+                    if (!isSilent) {
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'ดึงข้อมูลล้มเหลว',
+                            text: 'กรุณาตรวจสอบ URL หรือรอสักครู่แล้วลองใหม่ (Error: ' + err.message + ')',
+                            customClass: { popup: 'rounded-[2rem]' }
+                        });
+                    }
+                    console.error("Cloud Sync Error:", err);
+                });
+        }
+        // ===========================================
 
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(el => {
@@ -656,7 +781,6 @@
             
             const activeTab = document.getElementById(tabId);
             activeTab.classList.remove('hidden');
-            // Trigger reflow to restart animation
             void activeTab.offsetWidth; 
             activeTab.classList.add('fade-in');
 
@@ -675,7 +799,6 @@
             const preBtn = document.getElementById('select-pre-btn');
             const postBtn = document.getElementById('select-post-btn');
 
-            // ใช้การเพิ่ม/ลบ class แทนการแก้ไข className ตรงๆ เพื่อไม่ให้ลบ class hidden ทิ้ง
             if(type === 'pre') {
                 preBtn.classList.add('bg-white', 'text-pink-600', 'shadow-sm', 'border', 'border-gray-200/50');
                 preBtn.classList.remove('text-gray-500', 'hover:text-gray-800');
@@ -690,7 +813,6 @@
                 preBtn.classList.remove('bg-white', 'text-pink-600', 'shadow-sm', 'border', 'border-gray-200/50');
             }
 
-            // Animate form container
             const container = document.getElementById('survey-questions-container');
             container.style.opacity = '0';
             setTimeout(() => {
@@ -705,6 +827,7 @@
             container.innerHTML = '';
             
             const currentPrefix = currentType === 'pre' ? 'PRE' : 'POST';
+            // นับจำนวนแค่ใน local เพื่อหารหัสต่อไป (ถ้ากดซิงค์แล้วจำนวนจะนับต่อจาก Cloud ให้เอง)
             const currentList = responses.filter(r => r.FormType === (currentType === 'pre' ? 'Pre-Test' : 'Post-Test'));
             const nextNumber = String(currentList.length + 1).padStart(3, '0');
             const runId = `${currentPrefix}-${nextNumber}`;
@@ -716,7 +839,6 @@
                 const sectionDiv = document.createElement('div');
                 sectionDiv.className = 'bg-white p-6 sm:p-10 rounded-[2rem] border border-gray-100 shadow-sm space-y-8 relative overflow-hidden';
                 
-                // Add subtle top accent line
                 const accentLine = document.createElement('div');
                 accentLine.className = 'absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-pink-300 to-rose-300';
                 sectionDiv.appendChild(accentLine);
@@ -736,10 +858,9 @@
                         optDiv.className = 'grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4';
 
                         q.options.forEach((opt, oIdx) => {
-                            // UI Improved Radio buttons
                             optDiv.innerHTML += `
                                 <label class="radio-container relative flex items-center p-4 rounded-2xl border-2 border-gray-100 cursor-pointer hover:bg-gray-50 hover:border-gray-200">
-                                    <input type="radio" name="${q.id}" value="${oIdx+1}" class="w-5 h-5 text-pink-500 bg-gray-100 border-gray-300 focus:ring-pink-500 focus:ring-2" required>
+                                    <input type="radio" name="${q.id}" value="${oIdx+1}" class="w-5 h-5 text-pink-500 bg-gray-100 border-gray-300 focus:ring-pink-500 focus:ring-2">
                                     <span class="radio-text ml-3 text-sm sm:text-base font-medium text-gray-600">${opt}</span>
                                 </label>
                             `;
@@ -766,7 +887,7 @@
                                         <span class="text-xs font-bold text-gray-400 mr-2 hidden sm:inline-block uppercase tracking-wider">น้อย</span>
                                         ${[1,2,3,4,5].map(v => `
                                             <label class="likert-btn w-12 h-12 sm:w-14 sm:h-14 rounded-2xl text-base sm:text-lg">
-                                                <input type="radio" name="${fieldId}" value="${v}" required>
+                                                <input type="radio" name="${fieldId}" value="${v}">
                                                 ${v}
                                             </label>
                                         `).join('')}
@@ -791,7 +912,6 @@
             let formData = {};
             for (let [key, val] of dataObj.entries()) { formData[key] = val; }
 
-            // Validate answers
             const config = currentType === 'pre' ? preTestConfig : postTestConfig;
             let missing = false;
 
@@ -820,19 +940,20 @@
             const now = new Date();
             let finalData = { ...formData };
             
-            // Map Radio values
             const mapQ1 = { "1": "1_เภสัชกร", "2": "2_พยาบาลวิชาชีพ", "3": "3_แพทย์", "4": "4_เจ้าพนักงานเภสัชกรรม", "5": "5_อื่น ๆ" };
             const mapQ2 = { "1": "1_ห้องยา/เภสัชกรรม", "2": "2_หอผู้ป่วยใน", "3": "3_ห้องฉุกเฉิน", "4": "4_ผู้ป่วยนอก", "5": "5_อื่น ๆ" };
             const mapQ3 = { "1": "1_น้อยกว่า 3 ปี", "2": "2_3–5 ปี", "3": "3_6–10 ปี", "4": "4_มากกว่า 10 ปี" };
-            const mapQ4Pre = { "1": "1_ไม่เคยรายงาน", "2": "2_เคยรายงาน 1–5 ครั้ง", "3": "3_เคยรายงาน 6–10 ครั้ง", "4": "4_เคยรายงานมากกว่า 10 ครั้ง" };
-            const mapQ4Post = { "1": "1_ไม่เคยรายงาน", "2": "2_1–5 ครั้ง", "3": "3_6–10 ครั้ง", "4": "4_มากกว่า 10 ครั้ง" };
-            const mapQ5 = { "1": "1_น้อยมาก", "2": "2_น้อย", "3": "3_ปานกลาง", "4": "4_มาก", "5": "5_มากที่สุด" };
+            const mapQ4 = { "1": "1_ต่ำกว่าปริญญาตรี", "2": "2_ปริญญาตรี", "3": "3_สูงกว่าปริญญาตรี" };
+            const mapQ5Pre = { "1": "1_ไม่เคยรายงาน", "2": "2_เคยรายงาน 1–5 ครั้ง", "3": "3_เคยรายงาน 6–10 ครั้ง", "4": "4_เคยรายงานมากกว่า 10 ครั้ง" };
+            const mapQ5Post = { "1": "1_ไม่เคยรายงาน", "2": "2_1–5 ครั้ง", "3": "3_6–10 ครั้ง", "4": "4_มากกว่า 10 ครั้ง" };
+            const mapQ6 = { "1": "1_น้อยมาก", "2": "2_น้อย", "3": "3_ปานกลาง", "4": "4_มาก", "5": "5_มากที่สุด" };
 
             if(finalData['Q1']) finalData['Q1'] = mapQ1[finalData['Q1']] || finalData['Q1'];
             if(finalData['Q2']) finalData['Q2'] = mapQ2[finalData['Q2']] || finalData['Q2'];
             if(finalData['Q3']) finalData['Q3'] = mapQ3[finalData['Q3']] || finalData['Q3'];
-            if(finalData['Q4']) finalData['Q4'] = currentType === 'pre' ? (mapQ4Pre[finalData['Q4']] || finalData['Q4']) : (mapQ4Post[finalData['Q4']] || finalData['Q4']);
-            if(finalData['Q5']) finalData['Q5'] = mapQ5[finalData['Q5']] || finalData['Q5'];
+            if(finalData['Q4']) finalData['Q4'] = mapQ4[finalData['Q4']] || finalData['Q4'];
+            if(finalData['Q5']) finalData['Q5'] = currentType === 'pre' ? (mapQ5Pre[finalData['Q5']] || finalData['Q5']) : (mapQ5Post[finalData['Q5']] || finalData['Q5']);
+            if(finalData['Q6']) finalData['Q6'] = mapQ6[finalData['Q6']] || finalData['Q6'];
 
             finalData['Timestamp'] = now.toISOString();
             finalData['Consent'] = 'Yes';
@@ -843,7 +964,7 @@
             responses.push({...finalData});
             localStorage.setItem('kutchap_data', JSON.stringify(responses));
 
-            const gasUrl = document.getElementById('gas-url').value;
+            const gasUrl = GAS_URL;
             if(gasUrl) {
                 Swal.fire({
                     title: 'กำลังส่งข้อมูล...',
@@ -877,13 +998,13 @@
                 document.getElementById('suggestion').value = '';
                 document.getElementById('researchForm').reset();
                 window.scrollTo({ top: 0, behavior: 'smooth' });
+                
+                // สั่งดึงข้อมูลล่าสุดจาก Cloud เพื่ออัปเดตกราฟแบบอัตโนมัติ
+                fetchDataFromCloud(true);
                 renderQuestions();
-                updateDashboardData();
-                updateAdminTable();
             });
         }
 
-        // Analytics functions
         let resultChart = null;
 
         function updateDashboardData() {
@@ -892,6 +1013,7 @@
 
             document.getElementById('stat-pre-count').innerText = preList.length;
             document.getElementById('stat-post-count').innerText = postList.length;
+            document.getElementById('stat-total-count').innerText = preList.length + postList.length;
 
             const preContainer = document.getElementById('pre-domain-stats');
             preContainer.innerHTML = '';
@@ -928,7 +1050,8 @@
             let values = [];
             list.forEach(item => {
                 keys.forEach(k => {
-                    if(item[k] !== undefined) values.push(parseFloat(item[k]));
+                    // ป้องกันค่าว่าง หรือค่าที่ไม่ใช่ตัวเลข
+                    if(item[k] !== undefined && item[k] !== "") values.push(parseFloat(item[k]));
                 });
             });
 
@@ -1012,7 +1135,6 @@
             const ctx = document.getElementById('compChart').getContext('2d');
             if (resultChart) resultChart.destroy();
 
-            // Setup Custom Font for Chart
             Chart.defaults.font.family = "'Sarabun', sans-serif";
 
             resultChart = new Chart(ctx, {
@@ -1053,10 +1175,9 @@
             });
         }
 
-        // Admin functionality
         function loginAdmin() {
             const pass = document.getElementById('admin-pass').value;
-            if (pass === '1234') {
+            if (pass === '0821188663') {
                 const authCard = document.getElementById('admin-auth-card');
                 authCard.style.opacity = 0;
                 setTimeout(() => {
@@ -1073,9 +1194,7 @@
         }
 
         function saveGasUrl() {
-            const url = document.getElementById('gas-url').value;
-            localStorage.setItem('kutchap_gas_url', url);
-            Swal.fire({ icon: 'success', title: 'บันทึกลิงก์สำเร็จ', confirmButtonColor: '#10b981', customClass: { popup: 'rounded-[2rem]' } });
+            Swal.fire({ icon: 'info', title: 'ตั้งค่าอัตโนมัติแล้ว', text: 'URL ถูกฝังลงในโค้ดแบบถาวรแล้ว ไม่จำเป็นต้องบันทึกใหม่', confirmButtonColor: '#3b82f6', customClass: { popup: 'rounded-[2rem]' } });
         }
 
         function updateAdminTable() {
@@ -1091,6 +1210,11 @@
                 const isPre = row.FormType === 'Pre-Test';
                 const tr = document.createElement('tr');
                 tr.className = 'hover:bg-gray-50 transition-colors duration-200';
+                
+                // ดึงเฉพาะคำตอบ (ตัดเลขนำหน้าออกเพื่อความสวยงามในตาราง)
+                const q1 = row.Q1 ? String(row.Q1).split('_').pop() : '-';
+                const q2 = row.Q2 ? String(row.Q2).split('_').pop() : '-';
+
                 tr.innerHTML = `
                     <td class="p-4 font-bold text-gray-800">${row.id || '-'}</td>
                     <td class="p-4">
@@ -1099,9 +1223,9 @@
                         </span>
                     </td>
                     <td class="p-4 text-xs font-mono text-gray-500">${row.Timestamp ? new Date(row.Timestamp).toLocaleString('th-TH') : '-'}</td>
-                    <td class="p-4 font-medium text-gray-600">${(row.Q1 || '-').split('_')[1] || row.Q1 || '-'}</td>
-                    <td class="p-4 font-medium text-gray-600">${(row.Q2 || '-').split('_')[1] || row.Q2 || '-'}</td>
-                    <td class="p-4 text-center"><i class="fa-solid fa-circle-check text-emerald-500 text-lg"></i></td>
+                    <td class="p-4 font-medium text-gray-600">${q1}</td>
+                    <td class="p-4 font-medium text-gray-600">${q2}</td>
+                    <td class="p-4 text-center"><i class="fa-solid fa-cloud-check text-emerald-500 text-lg" title="ซิงค์ข้อมูลแล้ว"></i></td>
                 `;
                 tbody.appendChild(tr);
             });
@@ -1109,8 +1233,8 @@
 
         function clearSystemData() {
             Swal.fire({
-                title: 'ยืนยันการล้างข้อมูล?',
-                text: "ข้อมูลแบบสอบถามในเครื่องนี้จะหายไป (บน Google Sheets จะยังคงอยู่)",
+                title: 'ยืนยันการล้างข้อมูลในเครื่อง?',
+                text: "ข้อมูลจะหายไปจากหน้าจอนี้ (แต่ถ้ากดซิงค์ ข้อมูลจะกลับมาใหม่จาก Google Sheets)",
                 icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', cancelButtonColor: '#9ca3af',
                 confirmButtonText: 'ใช่, ล้างเลย', cancelButtonText: 'ยกเลิก', customClass: { popup: 'rounded-[2rem]' }
             }).then((result) => {
@@ -1123,35 +1247,6 @@
                     Swal.fire({title: 'ล้างข้อมูลสำเร็จ', icon: 'success', confirmButtonColor: '#10b981', customClass: { popup: 'rounded-[2rem]' }});
                 }
             });
-        }
-
-        function exportDataToCsv() {
-            if (responses.length === 0) return Swal.fire({ icon: 'info', title: 'ไม่มีข้อมูลให้ส่งออก', confirmButtonColor: '#3b82f6', customClass: { popup: 'rounded-3xl' } });
-
-            let headers = new Set();
-            responses.forEach(r => Object.keys(r).forEach(k => headers.add(k)));
-            const headerArray = Array.from(headers);
-
-            let csvContent = "\uFEFF"; 
-            csvContent += headerArray.join(",") + "\n";
-
-            responses.forEach(row => {
-                let rowValues = headerArray.map(h => {
-                    let val = row[h] !== undefined ? row[h] : "";
-                    if (typeof val === 'string') val = val.replace(/,/g, " ");
-                    return `"${val}"`;
-                });
-                csvContent += rowValues.join(",") + "\n";
-            });
-
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement("a");
-            link.href = url;
-            link.download = `kutchap_data_${new Date().getTime()}.csv`;
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
     </script>
 </body>
