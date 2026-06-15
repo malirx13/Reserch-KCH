@@ -672,6 +672,16 @@
         let currentType = 'pre'; 
         let responses = JSON.parse(localStorage.getItem('kutchap_data')) || [];
 
+        // เพิ่มฟังก์ชันสำหรับอัปเดตเลขรหัสแบบแยกส่วน เพื่อไม่ให้กระทบฟอร์มที่กำลังกรอก
+        function updateFormId() {
+            const currentPrefix = currentType === 'pre' ? 'PRE' : 'POST';
+            const currentList = responses.filter(r => r.FormType === (currentType === 'pre' ? 'Pre-Test' : 'Post-Test'));
+            const nextNumber = String(currentList.length + 1).padStart(3, '0');
+            const runId = `${currentPrefix}-${nextNumber}`;
+            const displayEl = document.getElementById('display-run-id');
+            if(displayEl) displayEl.innerText = runId;
+        }
+
         window.onload = function() {
             // แสดง URL ไว้ในช่อง Admin และปิดการแก้ไข (ล็อกไว้)
             const urlInput = document.getElementById('gas-url');
@@ -739,6 +749,7 @@
                         
                         updateDashboardData();
                         updateAdminTable();
+                        updateFormId(); // <--- สั่งอัปเดตเลขรหัสบนหน้าจอทันทีเมื่อโหลดข้อมูลเสร็จ
                         
                         if (!isSilent) {
                             Swal.fire({
@@ -821,12 +832,7 @@
             const container = document.getElementById('survey-questions-container');
             container.innerHTML = '';
             
-            const currentPrefix = currentType === 'pre' ? 'PRE' : 'POST';
-            // นับจำนวนแค่ใน local เพื่อหารหัสต่อไป (ถ้ากดซิงค์แล้วจำนวนจะนับต่อจาก Cloud ให้เอง)
-            const currentList = responses.filter(r => r.FormType === (currentType === 'pre' ? 'Pre-Test' : 'Post-Test'));
-            const nextNumber = String(currentList.length + 1).padStart(3, '0');
-            const runId = `${currentPrefix}-${nextNumber}`;
-            document.getElementById('display-run-id').innerText = runId;
+            updateFormId(); // <--- เรียกใช้ฟังก์ชันแทนโค้ดเดิมที่ยาวๆ
 
             const config = currentType === 'pre' ? preTestConfig : postTestConfig;
 
@@ -953,7 +959,13 @@
             finalData['Timestamp'] = now.toISOString();
             finalData['Consent'] = 'Yes';
             finalData['Suggestion'] = document.getElementById('suggestion').value;
-            finalData['id'] = document.getElementById('display-run-id').innerText;
+            
+            // คำนวณรหัสใหม่แบบ Real-time ตอนกดส่ง เพื่อป้องกันปัญหาเปิดหน้าจอทิ้งไว้นาน
+            const currentPrefix = currentType === 'pre' ? 'PRE' : 'POST';
+            const currentList = responses.filter(r => r.FormType === (currentType === 'pre' ? 'Pre-Test' : 'Post-Test'));
+            const nextNumber = String(currentList.length + 1).padStart(3, '0');
+            finalData['id'] = `${currentPrefix}-${nextNumber}`;
+            
             finalData['FormType'] = currentType === 'pre' ? 'Pre-Test' : 'Post-Test';
 
             responses.push({...finalData});
